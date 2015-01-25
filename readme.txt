@@ -10,7 +10,7 @@ Stable tag:trunk
 License:GPLv2 or later
 License URI:http://www.gnu.org/licenses/gpl-2.0.html
 
-Continuous Image Carousel With Lightbox is beautiful responsive continuous thumbnail image slider with responsive lightbox.Add any number of images from admin panel.
+Continuous Image Carousel With Lightbox is beautiful responsive continuous thumbnail image slider with responsive lightbox.Add any number of images.
 
 == Description ==
 
