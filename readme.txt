@@ -2,13 +2,18 @@
 Contributors:nik00726
 Donate link:http://www.i13websolution.com/donate-wordpress_image_thumbnail.php
 Tags:wordpress continuous slider lightbox,wordpress responsive continuous slider,wordpress ticker slider,wordpress continuous carousel,wordpress continuously slider,wordpress uninterrupted slider
+
 Requires at least:3.0
 Tested up to:4.1
 Version:1.0
 Stable tag:trunk
 License:GPLv2 or later
 License URI:http://www.gnu.org/licenses/gpl-2.0.html
+
+Continuous Image Carousel With Lightbox is beautiful responsive continuous thumbnail image slider with responsive lightbox.Add any number of images from admin panel.
+
 == Description ==
+
 Continuous Image Carousel With Lightbox is beautiful responsive continuous thumbnail image slider with responsive lightbox.Admin can manages any number of images into the slider.Admin can add,edit and delete slider images.admin can set image description to lightbox.Before add slider to wordPress blog admin can preview a slider.Admin can set height,width of slider images.Admin can also set speed,Number Of visible images into slider,on/off lightbox.Admin can also set link for lightbox image caption title.Image title and link are optional.If not set it will just display image with lightbox.
 
 **Live Demo  [Responsive Continuous Slider With Responsive Lightbox](http://www.i13websolution.com/wpdemo/ticker-image-carousel-with-lightbox/)**
@@ -70,6 +75,7 @@ Continuous Image Carousel With Lightbox is beautiful responsive continuous thumb
 
 
 == Installation ==
+
 
 This plugin is easy to install like other plug-ins of Wordpress as you need to just follow the below mentioned steps:
 
