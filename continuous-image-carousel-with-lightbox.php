@@ -222,7 +222,7 @@
                         update_option('continuous_thumbnail_slider_plus_lightbox_messages', array());     
                     ?>      
 
-                    <span><h3 style="color: blue;"><a target="_blank" href="http://www.i13websolution.com/wordpress-responsive-slider-with-responsive-lightbox.html">UPGRADE TO PRO VERSION</a></h3></span>
+                    <span><h3 style="color: blue;"><a target="_blank" href="http://www.i13websolution.com/wordpress-continuous-image-carousel-with-lightbox-pro.html">UPGRADE TO PRO VERSION</a></h3></span>
                     
                     <h2>Slider Settings</h2>
                     <div id="poststuff">
@@ -611,7 +611,7 @@
 
                 
                     <div class="icon32 icon32-posts-post" id="icon-edit"><br></div>
-                    <span><h3 style="color: blue;"><a target="_blank" href="http://www.i13websolution.com/wordpress-responsive-slider-with-responsive-lightbox.html">UPGRADE TO PRO VERSION</a></h3></span>
+                    <span><h3 style="color: blue;"><a target="_blank" href="http://www.i13websolution.com/wordpress-continuous-image-carousel-with-lightbox-pro.html">UPGRADE TO PRO VERSION</a></h3></span>
                     <h2>Images <a class="button add-new-h2" href="admin.php?page=continuous_thumbnail_slider_with_lightbox_image_management&action=addedit">Add New</a> </h2>
 
 
@@ -907,7 +907,7 @@
 
             ?>
             <div id="poststuff">  
-            <span><h3 style="color: blue;"><a target="_blank" href="http://www.i13websolution.com/wordpress-responsive-slider-with-responsive-lightbox.html">UPGRADE TO PRO VERSION</a></h3></span>
+            <span><h3 style="color: blue;"><a target="_blank" href="http://www.i13websolution.com/wordpress-continuous-image-carousel-with-lightbox-pro.html">UPGRADE TO PRO VERSION</a></h3></span>
             <div id="post-body" class="metabox-holder columns-2" >
                 <div id="post-body-content">
                     <?php if(isset($_GET['id']) and $_GET['id']>0)
@@ -1253,7 +1253,7 @@
 
                 ?>
                 <div id="poststuff">
-                    <span><h3 style="color: blue;"><a target="_blank" href="http://www.i13websolution.com/wordpress-responsive-slider-with-responsive-lightbox.html">UPGRADE TO PRO VERSION</a></h3></span>
+                    <span><h3 style="color: blue;"><a target="_blank" href="http://www.i13websolution.com/wordpress-continuous-image-carousel-with-lightbox-pro.html">UPGRADE TO PRO VERSION</a></h3></span>
                     <div id="post-body" class="metabox-holder columns-2">
                         <div id="post-body-content">
                             <div style="clear: both;"></div>
