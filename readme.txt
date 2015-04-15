@@ -16,7 +16,7 @@ Continuous Image Carousel With Lightbox is beautiful responsive continuous thumb
 
 Continuous Image Carousel With Lightbox is beautiful responsive continuous thumbnail image slider with responsive lightbox.Admin can manages any number of images into the slider.Admin can add,edit and delete slider images.admin can set image description to lightbox.Before add slider to wordPress blog admin can preview a slider.Admin can set height,width of slider images.Admin can also set speed,Number Of visible images into slider,on/off lightbox.Admin can also set link for lightbox image caption title.Image title and link are optional.If not set it will just display image with lightbox.
 
-**Live Demo  [Responsive Continuous Slider With Responsive Lightbox](http://www.i13websolution.com/wpdemo/ticker-image-carousel-with-lightbox/)**
+**Live Demo  [Responsive Continuous Slider With Responsive Lightbox](http://blog.i13websolution.com/wp-continuous-slider-with-lightbox-pro/)**
 
 **Find WordPress Responsive Continuous Slider With Responsive Lightbox Pro Plugin(Unlimited Slider+Much more) at [Responsive Continuous Slider](http://www.i13websolution.com/wordpress-continuous-image-carousel-with-lightbox-pro.html)**
 
