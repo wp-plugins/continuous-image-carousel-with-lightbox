@@ -4,7 +4,7 @@ Donate link:http://www.i13websolution.com/donate-wordpress_image_thumbnail.php
 Tags:wordpress continuous slider lightbox,wordpress responsive continuous slider,wordpress ticker slider,wordpress continuous carousel,wordpress continuously slider,wordpress uninterrupted slider
 
 Requires at least:3.0
-Tested up to:4.1
+Tested up to:4.2.2
 Version:1.0
 Stable tag:trunk
 License:GPLv2 or later
@@ -55,9 +55,11 @@ Continuous Image Carousel With Lightbox is beautiful responsive continuous thumb
 
 1. Unlimited Slider(Multiple sliders).
 
-2. Pro version WP >3.5 then use WordPress media uploader for image upload.
+2. Mass Images upload to slider.
 
-3. Add wordpress featured image in slider directly from post/page add/edit.
+3. Pro version WP >3.5 then use WordPress media uploader for image upload.
+
+4. Add wordpress featured image in slider directly from post/page add/edit.
 
 5. show/hide lightbox caption for particular image lightbox.
 
