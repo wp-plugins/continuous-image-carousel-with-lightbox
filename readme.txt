@@ -18,7 +18,7 @@ Continuous Image Carousel With Lightbox is beautiful responsive continuous thumb
 
 **Live Demo  [Responsive Continuous Slider With Responsive Lightbox](http://blog.i13websolution.com/wp-continuous-slider-with-lightbox-pro/)**
 
-**Find WordPress Responsive Continuous Slider With Responsive Lightbox Pro Plugin(Unlimited Slider+Much more) at [Responsive Continuous Slider](http://www.i13websolution.com/wordpress-continuous-image-carousel-with-lightbox-pro.html)**
+**Find WordPress Responsive Continuous Slider With Responsive Lightbox Pro Plugin(Unlimited Slider + Mass Image Upload + Much more) at [Responsive Continuous Slider](http://www.i13websolution.com/wordpress-continuous-image-carousel-with-lightbox-pro.html)**
 
 
 **Please rate this plugin if you find it useful**
