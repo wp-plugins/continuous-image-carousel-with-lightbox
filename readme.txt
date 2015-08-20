@@ -4,7 +4,7 @@ Donate link:http://www.i13websolution.com/donate-wordpress_image_thumbnail.php
 Tags:wordpress continuous slider lightbox,wordpress responsive continuous slider,wordpress ticker slider,wordpress continuous carousel,wordpress continuously slider,wordpress uninterrupted slider
 
 Requires at least:3.0
-Tested up to:4.2.2
+Tested up to:4.3
 Version:1.0
 Stable tag:trunk
 License:GPLv2 or later
