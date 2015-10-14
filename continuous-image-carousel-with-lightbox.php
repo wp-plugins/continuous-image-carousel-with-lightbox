@@ -63,26 +63,27 @@
 
         global $wpdb;
         $table_name = $wpdb->prefix . "continuous_image_carousel";
+        $charset_collate = $wpdb->get_charset_collate();
 
         $sql = "CREATE TABLE " . $table_name . " (
-         `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-            `title` varchar(1000) COLLATE utf8_unicode_ci NOT NULL,
-        `image_name` varchar(500) COLLATE utf8_unicode_ci NOT NULL,
-        `image_description` text COLLATE utf8_unicode_ci DEFAULT NULL,
-        `image_order` int(11) NOT NULL DEFAULT '0',
-        `open_link_in` tinyint(1) NOT NULL DEFAULT '1',
-        `enable_light_box_img_desc` tinyint(1) NOT NULL DEFAULT '1',
-        `createdon` datetime NOT NULL,
-        `custom_link` varchar(1000) COLLATE utf8_unicode_ci DEFAULT NULL,
-        `post_id` int(10) unsigned DEFAULT NULL,
-        `slider_id` int(10) unsigned NOT NULL DEFAULT '0',
-        PRIMARY KEY (`id`)
-        );";
+         `id` int(10)  NOT NULL AUTO_INCREMENT,
+         `title` varchar(1000)  NOT NULL,
+         `image_name` varchar(500) NOT NULL,
+         `image_description` text  DEFAULT NULL,
+         `image_order` int(11) NOT NULL DEFAULT '0',
+         `open_link_in` tinyint(1) NOT NULL DEFAULT '1',
+         `enable_light_box_img_desc` tinyint(1) NOT NULL DEFAULT '1',
+         `createdon` datetime NOT NULL,
+         `custom_link` varchar(1000)  DEFAULT NULL,
+         `post_id` int(10)  DEFAULT NULL,
+         `slider_id` int(10)  NOT NULL DEFAULT '0',
+         PRIMARY KEY (`id`)
+        ) $charset_collate;";
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
         dbDelta($sql);
 
 
-        $continuous_thumbnail_slider_plus_lightbox_settings=array('pauseonmouseover' => '1','speed' => '8000','imageheight' => '120','imagewidth' => '120','visible'=> '5','min_visible'=> '1','resizeImages'=>'1','scollerBackground'=>'#FFFFFF','imageMargin'=>'15');
+        $continuous_thumbnail_slider_plus_lightbox_settings=array('pauseonmouseover' => '1','speed' => '15000','imageheight' => '120','imagewidth' => '120','visible'=> '5','min_visible'=> '1','resizeImages'=>'1','scollerBackground'=>'#FFFFFF','imageMargin'=>'15');
 
         if( !get_option( 'continuous_thumbnail_slider_plus_lightbox_settings' ) ) {
 
@@ -134,16 +135,19 @@
 
         if(isset($_POST['btnsave'])){
 
-           
+             if ( !check_admin_referer( 'action_image_add_edit','add_edit_image_nonce')){
 
-            $speed=(int)trim($_POST['speed']);
+                wp_die('Security check fail'); 
+             }
+
+            $speed=(int) trim(htmlentities(strip_tags($_POST['speed']),ENT_QUOTES));
             
 
             //$scrollerwidth=$_POST['scrollerwidth'];
 
-            $visible=trim($_POST['visible']);
+            $visible=trim(htmlentities(strip_tags($_POST['visible']),ENT_QUOTES));
 
-            $min_visible=trim($_POST['min_visible']);
+            $min_visible=trim(htmlentities(strip_tags($_POST['min_visible']),ENT_QUOTES));
 
 
             if(isset($_POST['pauseonmouseover']))
@@ -157,11 +161,11 @@
                 $lightbox=false;
 
 
-            $imageMargin=(int)trim($_POST['imageMargin']);
-            $imageheight=(int)trim($_POST['imageheight']);
-            $imagewidth=(int)trim($_POST['imagewidth']);
+            $imageMargin=(int)trim(htmlentities(strip_tags($_POST['imageMargin']),ENT_QUOTES));
+            $imageheight=(int)trim(htmlentities(strip_tags($_POST['imageheight']),ENT_QUOTES));
+            $imagewidth=(int)trim(htmlentities(strip_tags($_POST['imagewidth']),ENT_QUOTES));
 
-            $scollerBackground=trim($_POST['scollerBackground']);
+            $scollerBackground=trim(htmlentities(strip_tags($_POST['scollerBackground']),ENT_QUOTES));
 
             $options=array();
             $options['pauseonmouseover']=$pauseonmouseover;  
@@ -198,7 +202,7 @@
                                 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script></td>
                             <td>
                                 <a target="_blank" title="Donate" href="http://www.i13websolution.com/donate-wordpress_image_thumbnail.php">
-                                    <img id="help us for free plugin" height="30" width="90" src="http://www.i13websolution.com/images/paypaldonate.jpg" border="0" alt="help us for free plugin" title="help us for free plugin">
+                                    <img id="help us for free plugin" height="30" width="90" src="<?php echo plugins_url( 'images/paypaldonate.jpg', __FILE__ );?>" border="0" alt="help us for free plugin" title="help us for free plugin">
                                 </a>
                             </td>
                         </tr>
@@ -239,7 +243,7 @@
                                                 <tr>
                                                     <td>
                                                         <input type="text" id="speed" size="30" name="speed" value="<?php echo $settings['speed']; ?>" style="width:100px;">
-                                                        <div style="clear:both">Example 8000</div>
+                                                        <div style="clear:both">Example 15000</div>
                                                         <div></div>
                                                     </td>
                                                 </tr>
@@ -376,7 +380,7 @@
                                             <div style="clear:both"></div>
                                         </div>
                                     </div>
-
+                                     <?php wp_nonce_field('action_image_add_edit','add_edit_image_nonce'); ?>           
                                     <input type="submit"  name="btnsave" id="btnsave" value="Save Changes" class="button-primary">&nbsp;&nbsp;<input type="button" name="cancle" id="cancle" value="Cancel" class="button-primary" onclick="location.href='admin.php?page=continuous_thumbnail_slider_with_lightbox_image_management'">
 
                                 </form> 
@@ -432,6 +436,8 @@
 
 
                                             })
+                                            
+                                            $n('#scollerBackground').wpColorPicker();   
                                     });
 
                                 </script> 
@@ -446,7 +452,10 @@
                 <div class="postbox"> 
                     <h3 class="hndle"><span></span>Access All Themes In One Price</h3> 
                     <div class="inside">
-                        <center><a href="http://www.elegantthemes.com/affiliates/idevaffiliate.php?id=11715_0_1_10" target="_blank"><img border="0" src="http://www.elegantthemes.com/affiliates/banners/300x250.gif" width="250" height="250"></a></center>
+                        <center><a href="http://www.elegantthemes.com/affiliates/idevaffiliate.php?id=11715_0_1_10" target="_blank">
+                                <img border="0" src="<?php echo plugins_url( 'images/300x250.gif', __FILE__ );?>" width="250" height="250">
+                            </a>
+                        </center>
 
                         <div style="margin:10px 5px">
 
@@ -455,7 +464,10 @@
                 <div class="postbox"> 
                     <h3 class="hndle"><span></span>Recommended WordPress Hostings</h3> 
                     <div class="inside">
-                        <center><a href="http://secure.hostgator.com/~affiliat/cgi-bin/affiliates/clickthru.cgi?id=nik00726-hs-wp"><img src="http://tracking.hostgator.com/img/WordPress_Hosting/300x250-animated.gif" width="250" height="250" border="0"></a></center>
+                        <center><a href="http://secure.hostgator.com/~affiliat/cgi-bin/affiliates/clickthru.cgi?id=nik00726-hs-wp">
+                                <img src="<?php echo plugins_url( 'images/300x250-animated.gif', __FILE__ );?>" width="250" height="250" border="0">
+                            </a>
+                        </center>
                         <div style="margin:10px 5px">
                         </div>
                     </div></div>
@@ -586,7 +598,7 @@
                             <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script></td>
                         <td>
                             <a target="_blank" title="Donate" href="http://www.i13websolution.com/donate-wordpress_image_thumbnail.php">
-                                <img id="help us for free plugin" height="30" width="90" src="http://www.i13websolution.com/images/paypaldonate.jpg" border="0" alt="help us for free plugin" title="help us for free plugin">
+                                <img id="help us for free plugin" height="30" width="90" src="<?php echo plugins_url( 'images/paypaldonate.jpg', __FILE__ );?>" border="0" alt="help us for free plugin" title="help us for free plugin">
                             </a>
                         </td>
                     </tr>
@@ -622,11 +634,11 @@
 
                     <form method="POST" action="admin.php?page=continuous_thumbnail_slider_with_lightbox_image_management&action=deleteselected"  id="posts-filter">
                         <div class="alignleft actions">
-                            <select name="action_upper">
+                            <select name="action_upper" id="action_upper">
                                 <option selected="selected" value="-1">Bulk Actions</option>
                                 <option value="delete">delete</option>
                             </select>
-                            <input type="submit" value="Apply" class="button-secondary action" id="deleteselected" name="deleteselected">
+                            <input type="submit" value="Apply" class="button-secondary action" id="deleteselected" name="deleteselected" onclick="return confirmDelete_bulk();">
                         </div>
                         <br class="clear">
                         <?php 
@@ -663,9 +675,9 @@
                                         if(count($rows) > 0){
 
                                             global $wp_rewrite;
-                                            $rows_per_page = 5;
+                                            $rows_per_page = 10;
 
-                                            $current = (isset($_GET['paged'])) ? ($_GET['paged']) : 1;
+                                            $current = (isset($_GET['paged'])) ? ( (int) htmlentities(strip_tags($_GET['paged']),ENT_QUOTES)) : 1;
                                             $pagination_args = array(
                                                 'base' => @add_query_arg('paged','%#%'),
                                                 'format' => '',
@@ -679,19 +691,20 @@
                                             $start = ($current - 1) * $rows_per_page;
                                             $end = $start + $rows_per_page;
                                             $end = (sizeof($rows) < $end) ? sizeof($rows) : $end;
+                                            $delRecNonce=wp_create_nonce('delete_image');
 
                                             for ($i=$start;$i < $end ;++$i ) {
 
                                                 $row = $rows[$i];
                                                 $id=$row['id'];
                                                 $editlink="admin.php?page=continuous_thumbnail_slider_with_lightbox_image_management&action=addedit&id=$id";
-                                                $deletelink="admin.php?page=continuous_thumbnail_slider_with_lightbox_image_management&action=delete&id=$id";
+                                                $deletelink="admin.php?page=continuous_thumbnail_slider_with_lightbox_image_management&action=delete&id=$id&nonce=$delRecNonce";
                                                 $outputimgmain = $baseurl.$row['image_name']; 
 
                                             ?>
                                             <tr valign="top" >
                                                 <td class="alignCenter check-column"   data-title="Select Record" ><input type="checkbox" value="<?php echo $row['id'] ?>" name="thumbnails[]"></td>
-                                                <td   data-title="Title" ><strong><?php echo stripslashes($row['title']) ?></strong></td>  
+                                                <td   data-title="Title" ><strong><?php echo $row['title']; ?></strong></td>  
                                                 <td class="alignCenter">
                                                     <img src="<?php echo $outputimgmain;?>" style="width:50px" height="50px"/>
                                                 </td> 
@@ -724,16 +737,31 @@
                         ?>
                         <br/>
                         <div class="alignleft actions">
-                            <select name="action">
+                            <select name="action" id="action_bottom">
                                 <option selected="selected" value="-1">Bulk Actions</option>
                                 <option value="delete">delete</option>
                             </select>
-                            <input type="submit" value="Apply" class="button-secondary action" id="deleteselected" name="deleteselected">
+                             <?php wp_nonce_field('action_settings_mass_delete','mass_delete_nonce'); ?>
+                            <input type="submit" value="Apply" class="button-secondary action" id="deleteselected" name="deleteselected" onclick="return confirmDelete_bulk();">
                         </div>
 
                     </form>
                     <script type="text/JavaScript">
 
+                      function  confirmDelete_bulk(){
+                            var topval=document.getElementById("action_bottom").value;
+                            var bottomVal=document.getElementById("action_upper").value;
+                       
+                            if(topval=='delete' || bottomVal=='delete'){
+                                
+                            
+                                var agree=confirm("Are you sure you want to delete selected images ?");
+                                if (agree)
+                                    return true ;
+                                else
+                                    return false;
+                            }
+                        }
                         function  confirmDelete(){
                             var agree=confirm("Are you sure you want to delete this image ?");
                             if (agree)
@@ -755,7 +783,7 @@
                     <div class="postbox"> 
                         <h3 class="hndle"><span></span>Recommended WordPress Themes</h3> 
                         <div class="inside">
-                            <center><a href="http://www.elegantthemes.com/affiliates/idevaffiliate.php?id=11715_0_1_10" target="_blank"><img border="0" src="http://www.elegantthemes.com/affiliates/banners/300x250.gif" width="250" height="250"></a></center>
+                             <center><a href="http://www.elegantthemes.com/affiliates/idevaffiliate.php?id=11715_0_1_10" target="_blank"><img border="0" src="<?php echo plugins_url( 'images/300x250.gif', __FILE__ );?>" width="250" height="250"></a></center>
                             <div style="margin:10px 5px">
 
                             </div>
@@ -774,6 +802,11 @@
         <?php        
             if(isset($_POST['btnsave'])){
 
+               if ( !check_admin_referer( 'action_image_add_edit','add_edit_image_nonce')){
+
+                   wp_die('Security check fail'); 
+               }
+               
                $uploads = wp_upload_dir();
                $baseDir=$uploads['basedir'];
                $baseDir=str_replace("\\","/",$baseDir);
@@ -782,42 +815,16 @@
                 //edit save
                 if(isset($_POST['imageid'])){
 
+                    
                     //add new
                     $location='admin.php?page=continuous_thumbnail_slider_with_lightbox_image_management';
-                    $title=trim(addslashes($_POST['imagetitle']));
-                    $imageurl=trim($_POST['imageurl']);
-                    $imageid=trim($_POST['imageid']);
+                    $title=trim(htmlentities(strip_tags($_POST['imagetitle']),ENT_QUOTES));
+                    $imageurl=trim(htmlentities(strip_tags($_POST['imageurl']),ENT_QUOTES));
+                    $imageid=trim(htmlentities(strip_tags($_POST['imageid']),ENT_QUOTES));
                     $imagename="";
-                     if($_FILES["image_name"]['name']!="" and $_FILES["image_name"]['name']!=null){
+                    if(trim($_POST['HdnMediaSelection'])!=''){
 
-                        if ($_FILES["image_name"]["error"] > 0)
-                        {
-                            $continuous_thumbnail_slider_plus_lightbox_messages=array();
-                            $continuous_thumbnail_slider_plus_lightbox_messages['type']='err';
-                            $continuous_thumbnail_slider_plus_lightbox_messages['message']='Error while file uploading.';
-                            update_option('continuous_thumbnail_slider_plus_lightbox_messages', $continuous_thumbnail_slider_plus_lightbox_messages);
-
-
-                            echo "<script type='text/javascript'> location.href='$location';</script>";
-                            exit;
-
-                        }
-                        else{
-
-                            $wpcurrentdir=dirname(__FILE__);
-                            $wpcurrentdir=str_replace("\\","/",$wpcurrentdir);
-                            $path_parts = pathinfo($_FILES["image_name"]["name"]);
-                            $extension = $path_parts['extension'];       
-                            $imagename=md5(time()).".$extension";
-                            $imageUploadTo=$pathToImagesFolder.'/'.$imagename;
-                            move_uploaded_file($_FILES["image_name"]["tmp_name"],$imageUploadTo); 
-
-                        }
-
-                    }
-                    else if(trim($_POST['HdnMediaSelection'])!=''){
-
-                        $postThumbnailID=(int)$_POST['HdnMediaSelection'];
+                        $postThumbnailID=(int) htmlentities(strip_tags($_POST['HdnMediaSelection']),ENT_QUOTES);
                         $photoMeta = wp_get_attachment_metadata( $postThumbnailID );
                         if(is_array($photoMeta) and isset($photoMeta['file'])) {
 
@@ -878,8 +885,8 @@
                     //add new
 
                     $location='admin.php?page=continuous_thumbnail_slider_with_lightbox_image_management';
-                    $title=trim(addslashes($_POST['imagetitle']));
-                    $imageurl=trim($_POST['imageurl']);
+                    $title=trim(htmlentities(strip_tags($_POST['imagetitle']),ENT_QUOTES));
+                    $imageurl=trim(htmlentities(strip_tags($_POST['imageurl']),ENT_QUOTES));
                     $createdOn=date('Y-m-d h:i:s');
                     if(function_exists('date_i18n')){
 
@@ -891,38 +898,13 @@
 
                     }
 
-                     if ($_FILES["image_name"]['name']!='' and $_FILES["image_name"]["error"] > 0)
-                    {
-                        $continuous_thumbnail_slider_plus_lightbox_messages=array();
-                        $continuous_thumbnail_slider_plus_lightbox_messages['type']='err';
-                        $continuous_thumbnail_slider_plus_lightbox_messages['message']='Error while file uploading.';
-                        update_option('continuous_thumbnail_slider_plus_lightbox_messages', $continuous_thumbnail_slider_plus_lightbox_messages);
-
-
-                        echo "<script type='text/javascript'> location.href='$location';</script>";
-                        exit;
-
-                    }
-                    else{
                         $location='admin.php?page=continuous_thumbnail_slider_with_lightbox_image_management';
 
                         try{
 
-                              if(isset($_FILES["image_name"]['name']) and $_FILES["image_name"]['name']!="" and $_FILES["image_name"]['name']!=null){
+                             if(trim($_POST['HdnMediaSelection'])!=''){
 
-                                $wpcurrentdir=dirname(__FILE__);
-                                $wpcurrentdir=str_replace("\\","/",$wpcurrentdir);
-                                $path_parts = pathinfo($_FILES["image_name"]["name"]);
-                                $extension = $path_parts['extension'];       
-                                $imagename=md5(time()).".$extension";
-                                $imageUploadTo=$pathToImagesFolder.'/'.$imagename;
-
-                                move_uploaded_file($_FILES["image_name"]["tmp_name"],$imageUploadTo ); 
-
-                                }
-                                else if(trim($_POST['HdnMediaSelection'])!=''){
-
-                                    $postThumbnailID=(int)$_POST['HdnMediaSelection'];
+                                    $postThumbnailID=(int)  htmlentities(strip_tags($_POST['HdnMediaSelection']),ENT_QUOTES);
                                     $photoMeta = wp_get_attachment_metadata( $postThumbnailID );
 
                                     if(is_array($photoMeta) and isset($photoMeta['file'])) {
@@ -969,9 +951,9 @@
                             update_option('continuous_thumbnail_slider_plus_lightbox_messages', $continuous_thumbnail_slider_plus_lightbox_messages);
                         }  
 
-                    }     
-                    echo "<script type='text/javascript'> location.href='$location';</script>";          
-					exit;
+                         
+                    echo "<script type='text/javascript'> location.href='$location';</script>";         
+                    exit;
                 } 
 
             }
@@ -986,15 +968,15 @@
                         { 
 
 
-                            $id= $_GET['id'];
+                            $id= (int) htmlentities(strip_tags($_GET['id']),ENT_QUOTES);
                             $query="SELECT * FROM ".$wpdb->prefix."continuous_image_carousel WHERE id=$id";
                             $myrow  = $wpdb->get_row($query);
 
                             if(is_object($myrow)){
 
-                                $title=stripslashes($myrow->title);
+                                $title=$myrow->title;
                                 $image_link=$myrow->custom_link;
-                                $image_name=stripslashes($myrow->image_name);
+                                $image_name=$myrow->image_name;
 
                             }   
 
@@ -1024,15 +1006,9 @@
                                             <?php if($image_name!=""){ ?>
                                                 <div><b>Current Image : </b><a id="currImg" href="<?php echo $baseurl.$image_name; ?>" target="_new"><?php echo $image_name; ?></a></div>
                                                 <?php } ?>      
-                                            <input type="file" name="image_name" onchange="reloadfileupload();"  id="image_name" size="30" />
-                                            <div style="clear:both"></div>
-                                            <div></div>
-                                            <div class="uploader">
+                                             <div class="uploader">
                                                 <br/>
-                                                <b style="margin-left: 50px;">OR</b><div style="clear: both;margin-top: 15px;"></div>
-                                                <?php if(continuous_slider_plus_responsive_lightbox_get_wp_version()>=3.5){ ?>
-                                                    <a href="javascript:;" class="niks_media" id="myMediaUploader"><b>Use WordPress Media Uploader</b></a>
-                                                    <?php }?>  
+                                                  <a href="javascript:;" class="niks_media" id="myMediaUploader"><b>Click here to add image</b></a>
                                                 <input id="HdnMediaSelection" name="HdnMediaSelection" type="hidden" value="" />
                                                 <br/>
                                             </div>  
@@ -1074,8 +1050,7 @@
                                                                         validExtensions[1]='jpeg';
                                                                         validExtensions[2]='png';
                                                                         validExtensions[3]='gif';
-                                                                        validExtensions[4]='bmp';
-                                                                        validExtensions[5]='tif';
+                                                                      
 
                                                                         var inarr=parseInt($n.inArray( attachment.subtype, validExtensions));
 
@@ -1168,10 +1143,11 @@
                                     </div>
                                     
                                     <?php if(isset($_GET['id']) and $_GET['id']>0){ ?> 
-                                        <input type="hidden" name="imageid" id="imageid" value="<?php echo $_GET['id'];?>">
+                                        <input type="hidden" name="imageid" id="imageid" value="<?php echo (int) htmlentities(strip_tags($_GET['id']),ENT_QUOTES);?>">
                                         <?php
                                         } 
                                     ?>
+                                     <?php wp_nonce_field('action_image_add_edit','add_edit_image_nonce'); ?>         
                                     <input type="submit" onclick="return validateFile();" name="btnsave" id="btnsave" value="Save Changes" class="button-primary">&nbsp;&nbsp;<input type="button" name="cancle" id="cancle" value="Cancel" class="button-primary" onclick="location.href='admin.php?page=continuous_thumbnail_slider_with_lightbox_image_management'">
 
                                 </form> 
@@ -1204,60 +1180,18 @@
 
                                     function validateFile(){
 
-                                        var $n = jQuery.noConflict();  
-                                        if($n('#currImg').length>0 || $n.trim($n("#HdnMediaSelection").val())!=""){
-                                            return true;
-                                        }
-                                        var fragment = $n("#image_name").val();
-                                        var filename = $n("#image_name").val().replace(/.+[\\\/]/, "");  
-                                        var imageid=$n("#image_name").val();
-
-                                        if(imageid==""){
-
-                                            if(filename!="")
+                                            var $n = jQuery.noConflict();  
+                                            if($n('#currImg').length>0 || $n.trim($n("#HdnMediaSelection").val())!="" ){
                                                 return true;
+                                            }
                                             else
                                                 {
                                                 $n("#err_daynamic").remove();
-                                                $n("#image_name").after('<label class="image_error" id="err_daynamic">Please select file or use media manager to select file.</label>');
+                                                $n("#myMediaUploader").after('<br/><label class="image_error" id="err_daynamic">Please select file.</label>');
                                                 return false;  
                                             } 
-                                        }
-                                        else{
-                                            return true;
-                                        }      
-                                    }
-                                    function reloadfileupload(){
 
-                                        var $n = jQuery.noConflict();  
-                                        var fragment = $n("#image_name").val();
-                                        var filename = $n("#image_name").val().replace(/.+[\\\/]/, "");
-                                        var validExtensions=new Array();
-                                        validExtensions[0]='jpg';
-                                        validExtensions[1]='jpeg';
-                                        validExtensions[2]='png';
-                                        validExtensions[3]='gif';
-                                        validExtensions[4]='bmp';
-                                        validExtensions[5]='tif';
-
-                                        var extension = filename.substr( (filename.lastIndexOf('.') +1) ).toLowerCase();
-
-                                        var inarr=parseInt($n.inArray( extension, validExtensions));
-
-                                        if(inarr<0){
-
-                                            $n("#err_daynamic").remove();
-                                            $n('#fileuploaddiv').html($n('#fileuploaddiv').html());   
-                                            $n("#image_name").after('<label class="image_error" id="err_daynamic">Invalid file extension</label>');
-
-                                        }
-                                        else{
-                                            $n("#err_daynamic").remove();
-
-                                        } 
-
-
-                                    }   
+                                        }  
                                 </script> 
 
                             </div>
@@ -1268,7 +1202,7 @@
                     <div class="postbox"> 
                         <h3 class="hndle"><span></span>Access All Themes In One Price</h3> 
                         <div class="inside">
-                            <center><a href="http://www.elegantthemes.com/affiliates/idevaffiliate.php?id=11715_0_1_10" target="_blank"><img border="0" src="http://www.elegantthemes.com/affiliates/banners/300x250.gif" width="250" height="250"></a></center>
+                            <center><a href="http://www.elegantthemes.com/affiliates/idevaffiliate.php?id=11715_0_1_10" target="_blank"><img border="0" src="<?php echo plugins_url( 'images/300x250.gif', __FILE__ ) ;?>" width="250" height="250"></a></center>
 
                             <div style="margin:10px 5px">
 
@@ -1277,7 +1211,7 @@
                     <div class="postbox"> 
                         <h3 class="hndle"><span></span>Best WordPress Hosting </h3> 
                         <div class="inside">
-                            <center><a href="http://secure.hostgator.com/~affiliat/cgi-bin/affiliates/clickthru.cgi?id=nik00726-hs-wp"><img src="http://tracking.hostgator.com/img/WordPress_Hosting/300x250-animated.gif" width="250" height="250" border="0"></a></center>
+                            <center><a href="http://secure.hostgator.com/~affiliat/cgi-bin/affiliates/clickthru.cgi?id=nik00726-hs-wp"><img src="<?php echo plugins_url( 'images/300x250-animated.gif', __FILE__ ) ;?>" width="250" height="250" border="0"></a></center>
 
                             <div style="margin:10px 5px">
 
@@ -1293,8 +1227,21 @@
 
         else if(strtolower($action)==strtolower('delete')){
 
+             $retrieved_nonce = '';
+            
+            if(isset($_GET['nonce']) and $_GET['nonce']!=''){
+
+                $retrieved_nonce=$_GET['nonce'];
+
+            }
+            if (!wp_verify_nonce($retrieved_nonce, 'delete_image' ) ){
+
+
+                wp_die('Security check fail'); 
+            }
+            
             $location='admin.php?page=continuous_thumbnail_slider_with_lightbox_image_management';
-            $deleteId=(int)$_GET['id'];
+            $deleteId=(int) htmlentities(strip_tags($_GET['id']),ENT_QUOTES);
 
             $uploads = wp_upload_dir();
             $baseDir=$uploads['basedir'];
@@ -1309,10 +1256,10 @@
 
                 if(is_object($myrow)){
 
-                    $image_name=stripslashes($myrow->image_name);
+                    $image_name=$myrow->image_name;
                     $wpcurrentdir=dirname(__FILE__);
                     $wpcurrentdir=str_replace("\\","/",$wpcurrentdir);
-                    //$imagename=$_FILES["image_name"]["name"];
+                   
                     $imagetoDel=$pathToImagesFolder.'/'.$image_name;
                     @unlink($imagetoDel);
 
@@ -1341,6 +1288,12 @@
         }  
         else if(strtolower($action)==strtolower('deleteselected')){
 
+            if(!check_admin_referer('action_settings_mass_delete','mass_delete_nonce')){
+               
+                wp_die('Security check fail'); 
+            }
+        
+            
             $uploads = wp_upload_dir();
             $baseDir=$uploads['basedir'];
             $baseDir=str_replace("\\","/",$baseDir);
@@ -1363,10 +1316,10 @@
 
                             if(is_object($myrow)){
 
-                                $image_name=stripslashes($myrow->image_name);
+                                $image_name=$myrow->image_name;
                                 $wpcurrentdir=dirname(__FILE__);
                                 $wpcurrentdir=str_replace("\\","/",$wpcurrentdir);
-                                //$imagename=$_FILES["image_name"]["name"];
+                              
                                 $imagetoDel=$pathToImagesFolder.'/'.$image_name;
                                 @unlink($imagetoDel);
                                 $query = "delete from  ".$wpdb->prefix."continuous_image_carousel where id=$img";
@@ -1488,7 +1441,7 @@
                                           }
                              </script>
                              <?php endif;?>
-                                <div class="responsiveSlider" style="margin-top: <?php echo $topMargin;?> !important;">
+                                <div class="responsiveSlider" style="margin-top: <?php echo $topMargin;?> !important;visibility: hidden">
                                     <?php
                                         global $wpdb;
                                         $imageheight=$settings['imageheight'];
@@ -1584,7 +1537,7 @@
                                                 } 
 
                                                 $title="";
-                                                $rowTitle=stripslashes($row['title']);
+                                                $rowTitle=$row['title'];
                                                 $rowTitle=str_replace("'","’",$rowTitle); 
                                                 $rowTitle=str_replace('"','”',$rowTitle); 
                                                 if(trim($row['title'])!='' and trim($row['custom_link'])!=''){
@@ -1606,7 +1559,7 @@
                                             ?>         
 
                                             <div > 
-                                                <a rel="<?php echo $randOmeAlbName;?>" data-overlay="1" data-title="<?php echo $title;?>" class="<?php echo $rand_lightbox_rel;?>"  <?php if($settings['lightbox']):?> href="<?php echo $outputimgmain;?>" <?php elseif($row['custom_link']!=''):?> href="<?php echo $row['custom_link'];?>" <?php else: ?>href=""<?php endif;?>>
+                                                <a rel="<?php echo $randOmeAlbName;?>" data-overlay="1" data-title="<?php echo $title;?>" class="<?php echo $rand_lightbox_rel;?>"  <?php if($settings['lightbox']):?> href="<?php echo $outputimgmain;?>" <?php elseif($row['custom_link']!=''):?> href="<?php echo $row['custom_link'];?>" <?php else: ?><?php endif;?>>
                                                     <img <?php if($settings['lightbox']):?> onclick="return clickedItem();" <?php endif;?> src="<?php echo $outputimg; ?>" alt="<?php echo $rowTitle; ?>" title="<?php echo $rowTitle;?>"  />
                                                 </a> 
                                             </div>
@@ -1641,7 +1594,7 @@
 
                                         });
                                       
-
+                                        $n(".responsiveSlider").css('visibility','visible');
                                 });
                             </script>
 
@@ -1734,7 +1687,7 @@
                       }
          </script>
          <?php endif;?>
-        <div class="responsiveSliderWithResponsiveLightbox" style="margin-top: <?php echo $topMargin;?> !important;display: none;">
+        <div class="responsiveSliderWithResponsiveLightbox" style="margin-top: <?php echo $topMargin;?> !important;visibility: hidden;">
             <?php
                 global $wpdb;          
                 $imageheight=$settings['imageheight'];
@@ -1835,7 +1788,7 @@
 
 
                         $title="";
-                        $rowTitle=stripslashes($row['title']);
+                        $rowTitle=$row['title'];
                         $rowTitle=str_replace("'","’",$rowTitle); 
                         $rowTitle=str_replace('"','”',$rowTitle); 
                         if(trim($row['title'])!='' and trim($row['custom_link'])!=''){
@@ -1858,7 +1811,7 @@
             
 
                     <div class="limargin"> 
-                       <a rel="<?php echo $randOmeAlbName;?>" data-overlay="1" data-title="<?php echo $title;?>" class="<?php echo $rand_lightbox_rel;?>"  <?php if($settings['lightbox']):?> href="<?php echo $outputimgmain;?>" <?php elseif($row['custom_link']!=''):?> href="<?php echo $row['custom_link'];?>" <?php else: ?>href=""<?php endif;?>>
+                       <a rel="<?php echo $randOmeAlbName;?>" data-overlay="1" data-title="<?php echo $title;?>" class="<?php echo $rand_lightbox_rel;?>"  <?php if($settings['lightbox']):?> href="<?php echo $outputimgmain;?>" <?php elseif($row['custom_link']!=''):?> href="<?php echo $row['custom_link'];?>" <?php else: ?><?php endif;?>>
                             <img <?php if($settings['lightbox']):?> onclick="return clickedItem();" <?php endif;?> src="<?php echo $outputimg; ?>" alt="<?php echo $rowTitle; ?>" title="<?php echo $rowTitle;?>"  />
                         </a> 
                     </div>
@@ -1891,7 +1844,8 @@
 
                 });
 
-                $n(".responsiveSliderWithResponsiveLightbox").show();
+           
+                 $n(".responsiveSliderWithResponsiveLightbox").css('visibility','visible');
              
 
 
@@ -1915,7 +1869,7 @@
     function continuous_slider_plus_lightbox_is_plugin_page() {
         $server_uri = "http://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
 
-        foreach (array('continuous_thumbnail_slider_with_lightbox_image_management') as $allowURI) {
+        foreach (array('continuous_thumbnail_slider_with_lightbox_image_management','continuous_thumbnail_slider_with_lightbox') as $allowURI) {
             if(stristr($server_uri, $allowURI)) return true;
         }
         return false;
@@ -1930,6 +1884,8 @@
                 wp_enqueue_media();
             }
             wp_enqueue_style('media');
+            wp_enqueue_style( 'wp-color-picker' );
+            wp_enqueue_script( 'wp-color-picker' );
         }
     }
 
